@@ -18,12 +18,16 @@ from django.contrib import admin
 from django.urls import path, include
 from Xandar import settings
 from django.contrib.auth import views as auth_views
+from accounts import views
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('account/', include('accounts.urls')),
 
+
+
+    path('check_email/', views.check_email, name="check_email"),
 
 
     path('password-reset', 
