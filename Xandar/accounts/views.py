@@ -1,15 +1,104 @@
-from django.contrib.auth import login, authenticate
-from django.contrib.auth.models import User
+from django.contrib.auth import login, authenticate, logout
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
-from django.urls import reverse_lazy
 
 # Create your views here.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#----------------------------------------Amulya-----------------------------
 def login_page(request):
-<<<<<<< HEAD
-    return render(request, 'accounts/login.html')
-=======
     if request.method == 'GET':
         return render(request, 'accounts/login.html')
     elif request.method == 'POST':
@@ -26,14 +115,15 @@ def login_page(request):
         except User.DoesNotExist:
                 context = {'message': 'No such user exist'}
         return render(request, 'accounts/login.html', context=context)
->>>>>>> login
 
+def logout_user(request):
+    logout(request)
+    return redirect('accounts:loginapp')
 
 
 
 
 
-<<<<<<< HEAD
 
 
 
@@ -111,6 +201,7 @@ def login_page(request):
 
 
 
+#--------------------------------User Aman------------------------------
 
 
 
@@ -210,116 +301,7 @@ def login_page(request):
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+#-------------------------------_User Deepak-------------------------
 def check_email(request):
 	if request.method == 'POST':
 		mail = request.POST.get('email')
@@ -332,5 +314,82 @@ def check_email(request):
 			return redirect('loginapp')
 	else: 
 		return render(request, 'accounts/check_mail.html')
-=======
->>>>>>> login
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#----------------------User Aayush----------------------------
