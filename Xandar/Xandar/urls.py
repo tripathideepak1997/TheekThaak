@@ -53,7 +53,7 @@ urlpatterns = [
 
 
 
-    path('check_email/', views.check_email, name="check_email"),
+    path('forgot_password/', views.check_email, name="check_email"),
 
 
     path('password-reset', 
