@@ -17,10 +17,66 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include
 from Xandar import settings
+from django.contrib.auth import views as auth_views
+from accounts import views
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('account/', include('accounts.urls')),
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    path('forgot_password/', views.check_email, name="check_email"),
+
+
+    path('password-reset', 
+    	auth_views.PasswordResetView.as_view(
+    		template_name='accounts/password_reset.html'),
+    		 name="password_reset"),
+
+    path('password-reset/done', 
+    	auth_views.PasswordResetDoneView.as_view(
+    		template_name='accounts/password_reset_done.html'),
+    		 name="password_reset_done"),
+
+    path('password-reset-complete/', 
+    	auth_views.PasswordResetCompleteView.as_view(
+    		template_name='accounts/password_reset_complete.html'),
+    		 name="password_reset_complete"),
+
+    path('password-reset-confirm/<uidb64>/<token>/', 
+    	auth_views.PasswordResetConfirmView.as_view(
+    		template_name='accounts/password_reset_confirm.html'),
+    		 name="password_reset_confirm"),
+
+
 ]+ static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
 #urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
