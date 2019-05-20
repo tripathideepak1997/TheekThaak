@@ -2,8 +2,57 @@ from django.contrib.auth import login, authenticate, logout
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
+import random
 
+from django.contrib import messages
+
+from accounts.forms import UserRegisterForm
+from core.models import Customer
+from django.core.mail import EmailMultiAlternatives
+from django.template.loader import render_to_string
+from django.utils.html import strip_tags
 # Create your views here.
+
+
+def user_register(request):
+
+    if request.method == "POST":
+        form = UserRegisterForm(request.POST)
+        if form.is_valid():
+
+            username = form.cleaned_data['first_name'] + form.cleaned_data['last_name'] + str(random.randint(1, 100))
+            username = username.lower()
+            while Customer.objects.filter(username=username).exists():
+                username = form.cleaned_data['first_name'] + form.cleaned_data['last_name'] + str(random.randint(1, 100))
+            form.instance.username = username
+            form.save()
+
+            messages.success(request, 'You are now registered')
+
+
+            html_content = render_to_string('accounts/email_confirmation.html')
+
+            text_content = strip_tags(html_content)
+
+            msg = EmailMultiAlternatives('You are now registered', text_content,
+                                         'contact.realestate.information@gmail.com', [form.cleaned_data['email']])
+            msg.attach_alternative(html_content, "text/html")
+            msg.send()
+
+
+
+            
+            return redirect('loginapp')
+        else:
+            errors = form.errors
+            messages.error(request, 'Password not valid. It must contain at least 8 letters.')
+            return redirect('registration')
+    else:
+        form = UserRegisterForm()
+
+    return render(request, 'accounts/register.html')
+
+
 
 
 
