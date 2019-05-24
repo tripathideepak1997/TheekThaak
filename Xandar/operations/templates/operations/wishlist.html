@@ -1,0 +1,132 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+	<!-- Start Banner Area -->
+	<section class="banner-area organic-breadcrumb">
+		<div class="container">
+			<div class="breadcrumb-banner d-flex flex-wrap align-items-center justify-content-end">
+				<div class="col-first">
+					<h1>Your Wishlist</h1>
+					<nav class="d-flex align-items-center">
+						<a href="{% url 'accounts:registration' %}">Home<span class="lnr lnr-arrow-right"></span></a>
+						<a href="#">Wishlist</a>
+					</nav>
+				</div>
+			</div>
+		</div>
+	</section>
+	<!-- End Banner Area -->
+
+<!--================Cart Area =================-->
+    <section class="cart_area">
+        <div class="container">
+            <div class="cart_inner">
+                <div class="table-responsive">
+                    <table class="table">
+
+                        {% if no_item_found %}
+                        <div align="center">
+                            <h3>No items found. Add something to cart.</h3><br><br>
+                            <a class="primary-btn" href="{% url 'index' %}">Continue Shopping</a>
+                        </div>
+                        {% else %}
+                        <form role="form" method="POST">
+                            {% csrf_token %}
+                        <thead>
+                            <tr>
+                                <th style="font-size:18px;" scope="col">PRODUCT</th>
+                                <th style="font-size:18px;" scope="col">PRICE</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for item in items %}
+                            <tr>
+                                <td>
+                                    <div class="media">
+                                        <div class="d-flex">
+                                            <a href= "{% url 'products:product_detail' item.product.id %}">
+                                            <img src="{{ item.product_image.image.url }}" alt="Image Loading Soon..." height="100px" width="100px">
+                                            </a>
+                                        </div>
+                                        <div class="media-body" style="color:black; font-size:15px;">
+                                            <p>{{item.product.name}}</p>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <h5>₹ {{ item.product.price }}</h5>
+                                </td>
+                                <td>
+                                        <button style="float:right;" type="button" class="btn btn-default" onclick="">Add to Cart</button>
+                                </td>
+<!--                                <td align="center">-->
+<!--                                    <a href="#"><button style="float:right;" type="button" class="btn btn-success">View Details</button></a>-->
+<!--                                </td>-->
+                                <td>
+                                     <button id="remove-btn" style="float:right;" type="button"
+                                             onclick="abc({{item.id}})" class="btn btn-danger">Remove</button>
+
+<!--                                    <a id="remove-btn" style="float:right;" type="submit"-->
+<!--                                            href="{% url 'operations:delete_wishlist_items' item.id %}" class="btn btn-danger">Remove</a>-->
+                                </td>
+                            </tr>
+                            {% endfor %}
+
+                            <tr class="bottom_button">
+
+                            </tr>
+                            <tr class="out_button_area">
+                                <td>
+
+                                </td>
+                                <td>
+
+                                </td>
+                                <td>
+
+                                </td>
+
+                                <td>
+                                    <div style="float:right;" class="checkout_btn_inner d-flex align-items-center">
+                                        <a class="gray_btn" href="{% url 'index' %}">Continue Shopping</a>
+                                        <a class="primary-btn" href="#">Proceed to checkout</a>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                        {% endif %}
+                        </form>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!--================End Cart Area =================-->
+<script
+src="https://code.jquery.com/jquery-1.12.4.js"
+integrity="sha256-Qw82+bXyGq6MydymqBxNPYTaUXXq7c8v3CwiYwLLNXU="
+crossorigin="anonymous"></script>
+<script>
+
+function abc(obj){
+    var token = '{{ csrf_token }}'
+     $.ajax({
+                headers: {"X-CSRFToken": token},
+                url: '/operations/delete-item/' + obj +'/',
+                data: {'id':obj},
+                type: 'POST',
+                success: function(response) {
+                    window.location.reload();
+                    $(html).html(response);
+                },
+                error: function(error) {
+                    console.log(error);
+                }
+            });
+
+}
+
+</script>
+{% endblock content %}
