@@ -3,8 +3,9 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.urls import reverse
-
 from .views import get_extra_field
+from django.core.exceptions import ValidationError
+from django.utils.translation import gettext_lazy as _
 
 ATTRIBUTE_CHOICES = [
     ('T-Shirts',
@@ -97,3 +98,27 @@ class Wishlist(models.Model):
 
     def get_absolute_url(self):
         return reverse('operations:wishlist')
+
+def validate_quantity(value):
+    if value not in range(1, 4):
+        raise ValidationError(
+            _('Product cannot be more than 3 '),
+            params={'value': value},
+        )
+
+
+#-------------PREVIOUS WORK - WEEK ONE---------------#
+class OrderedItems(models.Model):
+    customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
+    product_id = models.ForeignKey(Product, on_delete=models.CASCADE)
+    product_image = models.ForeignKey(ProductImage, on_delete=models.CASCADE)
+    order_date = models.DateTimeField(auto_now_add=True)
+
+class DeliveryAddresses(models.Model):
+    customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
+    receiver_name = models.CharField(max_length=50, blank=False)
+    street_address = models.CharField(max_length=50, blank=False)
+    city = models.CharField(max_length=50, blank=False)
+    pincode = models.IntegerField(blank=False)
+    state = models.CharField(max_length=50, blank=False)
+    phone_number = models.IntegerField(blank=False)

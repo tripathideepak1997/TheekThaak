@@ -28,6 +28,7 @@ urlpatterns = [
     path('product/', include('products.urls')),
     path('operations/', include('operations.urls')),
     path('product_list/', ProductListView.as_view(), name="product_list"),
+    path('orders/', include('orders.urls')),
 
 
 

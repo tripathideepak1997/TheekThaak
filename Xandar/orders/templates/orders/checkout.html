@@ -1,0 +1,153 @@
+
+{% extends 'base.html' %}
+{% load static %}
+{% load multiply_filter %}
+{% block content %}
+<section class="banner-area organic-breadcrumb">
+        <div class="container">
+            <div class="breadcrumb-banner d-flex flex-wrap align-items-center justify-content-end">
+                <div class="col-first">
+                    <h1>Checkout</h1>
+                    <nav class="d-flex align-items-center">
+                        <a href="index.html">Home<span class="lnr lnr-arrow-right"></span></a>
+                        <a href="single-product.html">Checkout</a>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- End Banner Area -->
+
+<section class="checkout_area section_gap">
+        <div class="container">
+
+            <div class="cupon_area">
+                <div class="check_title">
+                    <h2>Have a coupon?</h2>
+                </div>
+                <input type="text" placeholder="Enter coupon code" id="coupon-value" autocomplete="off">
+                <button class="tp_btn" onclick="apply_coupon()">Apply Coupon</button>
+            </div>
+            <div class="billing_details">
+                <div class="row">
+                    <div class="col-lg-8">
+                        <h3>Billing Details</h3>
+
+                        <form class="row contact_form" action="#" method="post">
+                            <div class="col-md-12 form-group p_star">
+                                <input type="text" class="form-control" id="first" name="name">
+                                <span class="placeholder" data-placeholder="Full Name"></span>
+                            </div>
+                            <div class="col-md-6 form-group p_star">
+                                <input type="text" class="form-control" id="number" name="number">
+                                <span class="placeholder" data-placeholder="Phone number"></span>
+                            </div>
+                            <div class="col-md-12 form-group p_star">
+                                <input type="text" class="form-control" id="add1" name="add1">
+                                <span class="placeholder" data-placeholder="Address line 01"></span>
+                            </div>
+                            <div class="col-md-12 form-group p_star">
+                                <input type="text" class="form-control" id="add2" name="add2">
+                                <span class="placeholder" data-placeholder="Address line 02"></span>
+                            </div>
+                            <div class="col-md-12 form-group p_star">
+                                <input type="text" class="form-control" id="city" name="city">
+                                <span class="placeholder" data-placeholder="Town/City"></span>
+                            </div>
+                            <div class="col-md-12 form-group p_star">
+                                <select class="country_select">
+                                    <option value="1">State One</option>
+                                    <option value="2">State Two</option>
+                                    <option value="4">State Three</option>
+                                </select>
+                            </div>
+                            <div class="col-md-12 form-group">
+                                <input type="text" class="form-control" id="zip" name="zip" placeholder="Postcode/ZIP">
+                            </div>
+                            <div class="col-md-12 form-group">
+                                <strong>Choose one of the payment methods to confirm the payment and place order.</strong>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="order_box">
+                            <h2>Your Order</h2>
+                            <ul class="list">
+                                <li><a href="#">Product <span>Total</span></a></li>
+                                {% for order in orders %}
+                                        <li><a href="#">{{order.product.name}}<span class="middle">x 01</span> <span class="last">₹{% multiply order.product.price 1%}</span></a></li>
+                                {% endfor %}
+                            </ul>
+                            <ul class="list list_2">
+                                <li><a href="#" disabled="True">Coupon Applied<span id="coupon-applied">None</span></a></li>
+                                <li><a href="#">Total (After Coupon) <span id="total-amount">₹{% total orders %}</span></a></li>
+                            </ul>
+
+                            <div class="payment_item">
+                                <div class="radion_btn">
+                                    <input type="radio" id="f-option5" name="selector">
+                                    <label for="f-option5">Check payments</label>
+                                    <div class="check"></div>
+                                </div>
+                                <p>Please send a check to Store Name, Store Street, Store Town, Store State / County,
+                                    Store Postcode.</p>
+                            </div>
+                            <div class="payment_item active">
+                                <div class="radion_btn">
+                                    <input type="radio" id="f-option6" name="selector">
+                                    <label for="f-option6">Paypal </label>
+                                    <img src="img/product/card.jpg" alt="">
+                                    <div class="check"></div>
+                                </div>
+                                <p>Pay via PayPal; you can pay with your credit card if you don’t have a PayPal
+                                    account.</p>
+                            </div>
+                            <div class="creat_account">
+                                <input type="checkbox" id="f-option4" name="selector">
+                                <label for="f-option4">I’ve read and accept the </label>
+                                <a href="#">terms & conditions*</a>
+                            </div>
+                            <a class="primary-btn" href="#">Proceed to Paypal</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!--================End Checkout Area =================-->
+<script>
+    function apply_coupon()
+{
+    var token = '{{ csrf_token }}'
+	var coupon = document.getElementById('coupon-value').value
+	var total = '{% total orders %}'
+	$.ajax({
+			headers: {"X-CSRFToken": token},
+			url: 'apply/',
+			data: {'coupon':coupon,
+			        'total':total},
+			type: 'GET',
+			success: function(response) {
+			    document.getElementById('total-amount').innerHTML=response
+			    if(coupon === '')
+			    {
+			        document.getElementById('coupon-applied').innerHTML='None'
+			    }
+			    else
+			    {
+			        document.getElementById('coupon-applied').innerHTML=coupon
+			    }
+
+			},
+			error: function(error) {
+				console.log(error)
+			}
+});
+}
+</script>
+{% endblock %}
+{% block scroll_js %}
+<script type="text/javascript">
+    $("html,body").scrollTop(400);
+</script>
+{% endblock scroll_js %}
