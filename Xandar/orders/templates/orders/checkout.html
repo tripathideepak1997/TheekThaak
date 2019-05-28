@@ -3,6 +3,7 @@
 {% load static %}
 {% load multiply_filter %}
 {% block content %}
+<div id="content-div">
 <section class="banner-area organic-breadcrumb">
         <div class="container">
             <div class="breadcrumb-banner d-flex flex-wrap align-items-center justify-content-end">
@@ -119,7 +120,7 @@
                                 <a href="#">terms & conditions*</a>
                             </div>
 
-                            <button  id="confirm-payment-btn" disabled class="primary-btn" style="width:290px">
+                            <button  id="confirm-payment-btn" disabled class="primary-btn" style="width:290px" >
                                 Confirm Payment
                             </button>
                         </div>
@@ -129,6 +130,7 @@
         </div>
     </section>
     <!--================End Checkout Area =================-->
+</div>
 <script
 			  src="https://code.jquery.com/jquery-3.4.1.min.js"
 			  integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
@@ -251,16 +253,18 @@ $('#phone-value').change(function(){
 					'street_address':street_address,
 					'pincode':parseInt(pincode),
 					'state':state,
-					'city':city
+					'city':city,
+					'payment':radioValue.toString(),
+					'total': $('#total-amount').text(),
 					},
 			type: 'GET',
-			success: function(response)
-			{
-                window.location = '/orders/order-confirmed/'
-			},
-			error: function(error) {
-				console.log(error)
-			}
+			success: function(response) {
+                    $('#content-div').html(response)
+                    $(window).scrollTop(300);
+                },
+                error: function(error) {
+                    console.log(error);
+                }
         });
     }
  }
