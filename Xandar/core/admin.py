@@ -31,6 +31,7 @@ class ProductAdmin(admin.ModelAdmin):
     search_fields = ['gender', 'category', 'sub_category', 'name']
     list_display = ('name', 'category', 'sub_category', 'gender')
     list_filter = ('category','sub_category','gender')
+    exclude = ('slug',)
     inlines = [
         ProductImageInline, AttributeInline, ExtraAttributeInline
     ]

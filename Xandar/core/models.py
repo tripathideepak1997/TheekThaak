@@ -2,7 +2,10 @@
 # Create your models here.
 from django.contrib.auth.models import AbstractUser
 from django.db import models
+from django.db.models.signals import pre_save
 from django.urls import reverse
+
+from Xandar.util import unique_slug_generator
 from .views import get_extra_field
 from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
@@ -58,6 +61,7 @@ class Customer(AbstractUser):
 
 class Product(models.Model):
     name = models.CharField(max_length=50, blank=False)
+    slug = models.SlugField(max_length=250, null=True, blank=True)
     description = models.CharField(max_length=255)
     price = models.PositiveIntegerField(blank=False)
     category = models.CharField(choices=CATEGORY_CHOICES, max_length=20)
@@ -69,6 +73,10 @@ class Product(models.Model):
     def __str__(self):
         return self.name
 
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = unique_slug_generator(self)
+        super(Product, self).save(*args, **kwargs)
 
 class ProductImage(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE, parent_link=True)
