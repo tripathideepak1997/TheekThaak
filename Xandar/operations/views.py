@@ -35,9 +35,9 @@ def add_wishlist_item(request, pk):
             return 'Item Added To Wishlist successfully'
     else:
         return 'Login To Save This to your Wishlist'
-# class DetailWishlistItems(DetailView):
-#     model = Wishlist
-#     template_name = 'accounts/register.html'
+
+
+
 
 
 @login_required
@@ -56,4 +56,19 @@ def delete_wishlist_items(request, pk):
         return HttpResponse(list_wishlist_items(request))
     except Customer.DoesNotExist:
         return redirect('accounts:login_app')
-    #return render(request, 'operations/wishlist.html', context)
+
+
+def show_orders(request):
+    return render(request, 'operations/orders.html')
+
+
+def show_cart(request):
+    return render(request, 'operations/cart.html')
+
+
+def show_address(request):
+    return render(request, 'operations/address.html')
+
+
+def track_order(request):
+    return render(request, 'operations/track.html')

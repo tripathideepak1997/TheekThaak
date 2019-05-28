@@ -51,6 +51,10 @@ def user_register(request):
         return redirect('index')
 
 
+def dashboard(request):
+    return render(request, 'accounts/dashboard.html')
+
+
 
 
 

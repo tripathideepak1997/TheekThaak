@@ -9,13 +9,14 @@
         background: #f7f7f7;
         color: #000;
         position: relative;
-        padding: 20px;
+        padding: 10px 0px 1px 10px;
         margin-top: 10px;
       }
 
       #message p {
-         padding: 10px 35px;
-         font-size: 15px;
+         margin : 8px;
+         padding: 0px 0px 0px 35px;
+         font-size: 14px;
       }
 
       /* Add a green text color and a checkmark when the requirements are right */
@@ -72,7 +73,7 @@
             <div class="col-first">
                <h1>Register New User</h1>
                <nav class="d-flex align-items-center">
-                  <a href="#">Home<span class="lnr lnr-arrow-right"></span></a>
+                  <a href="">Home<span class="lnr lnr-arrow-right"></span></a>
                   <a href="{% url 'accounts:registration' %}">Register New User</a>
                </nav>
             </div>
@@ -123,7 +124,7 @@
                               onblur="this.placeholder = 'Password *'" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
                               maxlength="15" required>
                         <div id="message" align="left">
-                           <h5>Password must contain the following:</h5><br>
+                           <h5>Password must contain the following:</h5>
                            <p id="letter" class="invalid">A lowercase letter</p>
                            <p id="capital" class="invalid">A capital (uppercase) letter</p>
                            <p id="number" class="invalid">A number</p>

@@ -3,21 +3,21 @@
 
 {% block content %}
 
-	<!-- Start Banner Area -->
-	<section class="banner-area organic-breadcrumb">
-		<div class="container">
-			<div class="breadcrumb-banner d-flex flex-wrap align-items-center justify-content-end">
-				<div class="col-first">
-					<h1>Your Wishlist</h1>
-					<nav class="d-flex align-items-center">
-						<a href="{% url 'accounts:registration' %}">Home<span class="lnr lnr-arrow-right"></span></a>
-						<a href="#">Wishlist</a>
-					</nav>
-				</div>
-			</div>
-		</div>
-	</section>
-	<!-- End Banner Area -->
+<!-- Start Banner Area -->
+<section class="banner-area organic-breadcrumb">
+<div class="container">
+<div class="breadcrumb-banner d-flex flex-wrap align-items-center justify-content-end">
+<div class="col-first">
+<h1>Your Wishlist</h1>
+<nav class="d-flex align-items-center">
+<a href="{% url 'accounts:registration' %}">Home<span class="lnr lnr-arrow-right"></span></a>
+<a href="#">Wishlist</a>
+</nav>
+</div>
+</div>
+</div>
+</section>
+<!-- End Banner Area -->
 
 <!--================Cart Area =================-->
     <section class="cart_area">
@@ -67,7 +67,6 @@
                                 <td>
                                      <button id="remove-btn" style="float:right;" type="button"
                                              onclick="abc({{item.id}})" class="btn btn-danger">Remove</button>
-
 <!--                                    <a id="remove-btn" style="float:right;" type="submit"-->
 <!--                                            href="{% url 'operations:delete_wishlist_items' item.id %}" class="btn btn-danger">Remove</a>-->
                                 </td>
@@ -108,9 +107,12 @@
 src="https://code.jquery.com/jquery-1.12.4.js"
 integrity="sha256-Qw82+bXyGq6MydymqBxNPYTaUXXq7c8v3CwiYwLLNXU="
 crossorigin="anonymous"></script>
+
+
 <script>
 
 function abc(obj){
+
     var token = '{{ csrf_token }}'
      $.ajax({
                 headers: {"X-CSRFToken": token},
@@ -125,8 +127,11 @@ function abc(obj){
                     console.log(error);
                 }
             });
-
 }
 
 </script>
+
+
+
 {% endblock content %}
+
