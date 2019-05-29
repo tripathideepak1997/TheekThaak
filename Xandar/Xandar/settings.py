@@ -143,3 +143,4 @@ EMAIL_USE_TLS = True
 
 LOGIN_URL = 'accounts:login_app'
 LOGIN_REDIRECT_URL = 'accounts:login_app'
+CART_SESSION_ID = 'cart'

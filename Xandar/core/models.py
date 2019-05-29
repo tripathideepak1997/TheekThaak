@@ -2,9 +2,7 @@
 # Create your models here.
 from django.contrib.auth.models import AbstractUser
 from django.db import models
-from django.db.models.signals import pre_save
 from django.urls import reverse
-
 from Xandar.util import unique_slug_generator
 from .views import get_extra_field
 from django.core.exceptions import ValidationError
@@ -107,14 +105,6 @@ class Wishlist(models.Model):
     def get_absolute_url(self):
         return reverse('operations:wishlist')
 
-def validate_quantity(value):
-    if value not in range(1, 4):
-        raise ValidationError(
-            _('Product cannot be more than 3 '),
-            params={'value': value},
-        )
-
-
 #-------------PREVIOUS WORK - WEEK ONE---------------#
 class OrderedItems(models.Model):
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
@@ -130,3 +120,42 @@ class DeliveryAddresses(models.Model):
     pincode = models.IntegerField(blank=False)
     state = models.CharField(max_length=50, blank=False)
     phone_number = models.IntegerField(blank=False)
+
+
+# Defining Validators
+
+
+
+def validate_quantity(value):
+    if value not in range(1, 4):
+        raise ValidationError(
+            _('Product cannot be more than 3 '),
+            params={'value': value},
+        )
+
+
+class Cart(models.Model):
+    user = models.ForeignKey(Customer, on_delete=models.CASCADE, null=True)
+    ip_address = models.GenericIPAddressField(null=True, blank=True)
+    is_ordered = models.BooleanField(default=False)
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.user.first_name
+
+
+class Items(models.Model):
+    choices = [(i, str(i)) for i in range(1, 4)]
+    cart = models.ForeignKey(Cart, on_delete=models.CASCADE)
+    product = models.OneToOneField(Product, on_delete=models.CASCADE)
+    product_img = models.OneToOneField(ProductImage, on_delete=models.CASCADE)
+    quantity = models.PositiveSmallIntegerField(validators=[validate_quantity, ], choices=choices)
+    unit_price = models.DecimalField(max_digits=18, decimal_places=2, verbose_name=_('unit price'))
+
+    def __str__(self):
+        return self.product.name
+
+
+
+

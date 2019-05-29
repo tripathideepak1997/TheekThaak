@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.views.generic.list import ListView
 from core.models import Product, ProductImage, Attribute, ExtraAttribute
 from django.db.models import Q
+from operations.views import add_to_cart
 
 
 
@@ -123,11 +124,11 @@ class ProductDetailView(DetailView):
 
 def product_add_wishlist_cart(request, pk):
 	action_perfomed = request.GET.get('button')
-	quantity = request.GET.get('quantity')
+	quantity = int(request.GET.get('quantity'))
 	if action_perfomed == 'wishlist':
 		return HttpResponse(add_wishlist_item(request, pk))
 	else:
-		return HttpResponse('Operation Not Available yet')
+		return HttpResponse(add_to_cart(request, pk, quantity))
 
 
 
