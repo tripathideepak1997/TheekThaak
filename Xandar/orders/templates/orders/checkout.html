@@ -1,0 +1,291 @@
+
+{% extends 'base.html' %}
+{% load static %}
+{% load multiply_filter %}
+{% block content %}
+<div id="content-div">
+<section class="banner-area organic-breadcrumb">
+        <div class="container">
+            <div class="breadcrumb-banner d-flex flex-wrap align-items-center justify-content-end">
+                <div class="col-first">
+                    <h1>Checkout</h1>
+                    <nav class="d-flex align-items-center">
+                        <a href="index.html">Home<span class="lnr lnr-arrow-right"></span></a>
+                        <a href="single-product.html">Checkout</a>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- End Banner Area -->
+
+<section class="checkout_area section_gap">
+        <div class="container">
+
+            <div class="cupon_area">
+                <div class="check_title">
+                    <h2>Have a coupon?</h2>
+                </div>
+                <input type="text" placeholder="Enter coupon code" id="coupon-value" autocomplete="off">
+                <button class="tp_btn" onclick="apply_coupon()">Apply Coupon</button>
+            </div>
+            <div class="billing_details">
+                <div class="row">
+                    <div class="col-lg-8">
+                        <h3>Billing Details</h3>
+
+                        <form class="row contact_form" action="#" method="post">
+                            <div class="col-md-6 form-group p_star">
+                                <h6>Name:</h6>
+                                <input type="text" class="form-control" id="name-value" name="name-value" required>
+                                <span class="error" id="name-error" style="color:red"></span>
+                            </div>
+                            <div class="col-md-6 form-group p_star">
+                                <h6>Phone Number:</h6>
+                                <input type="text" class="form-control" id="phone-value" name="name-value" required pattern="^[7-9][0-9]{9}$">
+                                <span class="error" id="phone-error" style="color:red"></span>
+                            </div>
+                            <div class="col-md-12 form-group p_star">
+                                <h6>Address 1:</h6>
+                                <input type="text" class="form-control" id="address-1-value" name="name" required>
+                                <span class="error" id="address-error" style="color:red"></span>
+                            </div>
+                            <div class="col-md-12 form-group p_star">
+                                <h6>Address 2:</h6>
+                                <input type="text" class="form-control" id="address-2-value" name="name">
+                            </div>
+                            <div class="col-md-6 form-group p_star">
+                                <h6>City:</h6>
+                                <input type="text" class="form-control" id="city-value" name="name" required>
+                                <span class="error" id="city-error" style="color:red"></span>
+                            </div>
+                            <div class="col-md-6 form-group p_star">
+                                <h6>PIN Code:</h6>
+                                <input type="text" class="form-control" id="pin-value" name="name" required pattern="^[1-9][0-9]{5}$">
+                                <span class="error" id="pin-error" style="color:red"></span>
+                            </div>
+                            <div class="col-md-6 form-group p_star">
+                                <h6>State:</h6>
+                                <select class="country_select" id="state-value">
+                                    <option value="Delhi">Delhi</option>
+                                    <option value="Noida">Noida</option>
+                                    <option value="Ghaziabad">Ghaziabad</option>
+                                </select>
+                            </div>
+                            <div class="col-md-12 form-group">
+                                <strong>Choose one of the payment methods to confirm the payment and place order.</strong>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="order_box">
+                            <h2>Your Order</h2>
+                            <ul class="list">
+                                <li><a href="#">Product <span>Total</span></a></li>
+                                {% for order in orders %}
+                                        <li><a href="#">{{order.product.name}}<span class="middle">x 01</span> <span class="last">₹{% multiply order.product.price 1%}</span></a></li>
+                                {% endfor %}
+                            </ul>
+                            <ul class="list list_2">
+                                <li><a href="#" disabled="True">Coupon Applied<span id="coupon-applied">None</span></a></li>
+                                <li><a href="#">Total (After Coupon) <span id="total-amount">₹{% total orders %}</span></a></li>
+                            </ul>
+                            Choose Payment Method:
+                            <div class="payment_item active">
+                                <div class="radion_btn">
+                                    <input type="radio" id="f-option1" name="selector" value="Cash on Delivery">
+                                    <label for="f-option1">Cash on Delivery</label>
+                                    <div class="check"></div>
+                                </div>
+                            </div>
+                            <div class="payment_item active">
+                                <div class="radion_btn">
+                                    <input type="radio" id="f-option2" name="selector" value="Debit/Credit Card">
+                                    <label for="f-option2">Debit/Credit Card</label>
+                                    <img src="{% static 'img/product/card.jpg' %}" alt="">
+                                    <div class="check"></div>
+                                </div>
+                            </div>
+                            <div class="payment_item active">
+                                <div class="radion_btn">
+                                    <input type="radio" id="f-option3" name="selector" value="Paypal">
+                                    <label for="f-option3">Paypal</label>
+                                    <img src="{% static 'img/product/card.jpg' %}" alt="">
+                                    <div class="check"></div>
+                                </div>
+                            </div>
+                            <div class="creat_account">
+                                <input type="checkbox" id="confirm-checkbox" name="selector">
+                                <label for="confirm-checkbox">I’ve read and accept the </label>
+                                <a href="#">terms & conditions*</a>
+                            </div>
+
+                            <button  id="confirm-payment-btn" disabled class="primary-btn" style="width:290px" >
+                                Confirm Payment
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!--================End Checkout Area =================-->
+</div>
+<script
+			  src="https://code.jquery.com/jquery-3.4.1.min.js"
+			  integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+			  crossorigin="anonymous"></script>
+<script>
+    function apply_coupon()
+{
+    var token = '{{ csrf_token }}'
+	var coupon = document.getElementById('coupon-value').value
+	var total = '{% total orders %}'
+	$.ajax({
+			headers: {"X-CSRFToken": token},
+			url: 'apply/',
+			data: {'coupon':coupon,
+			        'total':total},
+			type: 'GET',
+			success: function(response) {
+			    document.getElementById('total-amount').innerHTML=response
+			    if(coupon === '')
+			    {
+			        document.getElementById('coupon-applied').innerHTML='None'
+			    }
+			    else
+			    {
+			        document.getElementById('coupon-applied').innerHTML=coupon
+			    }
+
+			},
+			error: function(error) {
+				console.log(error)
+			}
+});
+}
+$('#pin-value').change(function(){
+    pincode = document.getElementById('pin-value').value
+    if(!pincode.match("^[1-9][0-9]{5}$"))
+    {
+    document.getElementById('pin-error').innerHTML = 'Please enter a valid PIN Code, Ex-208010'
+    }
+    else
+    {
+    document.getElementById('pin-error').innerHTML = ''
+    }
+})
+$('#phone-value').change(function(){
+    phone_number = $('#phone-value').val()
+    if(!phone_number.match("^[7-9][0-9]{9}$"))
+    {
+        $('#phone-error').text('Not A valid number, Enter a valid phone number.')
+    }
+    else
+    {
+        $('#phone-error').text('')
+    }
+})
+ $("#confirm-payment-btn").click(function(){
+ var radioValue = $("input[name='selector']:checked").val();
+ if (radioValue != 'on')
+ {
+    var state = ''
+    var phone_number = ''
+    var receiver_name = ''
+    var street_address = ''
+    var pincode = ''
+    city = ''
+    if ($('#phone-value').val())
+    {
+        phone_number = $('#phone-value').val()
+        $('#phone-error').text('')
+    }
+    else
+    {
+        $('#phone-error').text('Please Fill This Field')
+    }
+    if ($('#address-1-value').val())
+    {
+        street_address = $('#address-1-value').val()+' '+$('#address-2-value').val()
+        $('#address-error').text('')
+    }
+    else
+    {
+        $('#address-error').text('Please Fill This Field')
+    }
+    if ($('#pin-value').val())
+    {
+        pincode = $('#pin-value').val()
+        $('#pin-error').text('')
+    }
+    else
+    {
+        $('#pin-error').text('Please Fill This Field')
+    }
+    if ($('#city-value').val())
+    {
+        city = $('#city-value').val()
+        $('#city-error').text('')
+    }
+    else
+    {
+        $('#city-error').text('Please Fill This Field')
+    }
+    if ($('#name-value').val())
+    {
+        receiver_name = $('#name-value').val()
+        $('#name-error').text('')
+    }
+    else
+    {
+        $('#name-error').text('Please Fill This Field')
+    }
+    state = $('#state-value').val()
+    if (!phone_number == '' && !receiver_name == '' && !street_address == '' && !pincode == '' && !city == '')
+    {
+        var token = '{% csrf_token %}'
+        $.ajax({
+			headers: {"X-CSRFToken": token},
+			url: '/orders/place_order/',
+			data: {'phone_number':parseInt(phone_number),
+					'receiver_name':receiver_name,
+					'street_address':street_address,
+					'pincode':parseInt(pincode),
+					'state':state,
+					'city':city,
+					'payment':radioValue.toString(),
+					'total': $('#total-amount').text(),
+					},
+			type: 'GET',
+			success: function(response) {
+                    $('#content-div').html(response)
+                    $(window).scrollTop(300);
+                },
+                error: function(error) {
+                    console.log(error);
+                }
+        });
+    }
+ }
+ else
+ {
+    alert('Please check a payment method to Proceed')
+ }
+});
+
+$('#confirm-checkbox').change(function(){
+    if($(this).prop("checked") == true){
+                $('#confirm-payment-btn').removeAttr('disabled')
+            }
+            else if($(this).prop("checked") == false){
+                $('#confirm-payment-btn').attr('disabled','disabled')
+            }
+});
+</script>
+{% endblock %}
+{% block scroll_js %}
+<script type="text/javascript">
+    $("html,body").scrollTop(400);
+</script>
+{% endblock scroll_js %}
