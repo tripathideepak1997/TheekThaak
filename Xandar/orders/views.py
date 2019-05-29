@@ -1,7 +1,7 @@
 from django.http import HttpResponse
 from django.shortcuts import render, redirect, render_to_response
 from core.models import OrderedItems, DeliveryAddresses, Customer, Wishlist
-
+from django.views.generic import ListView
 
 # Create your views here.
 
@@ -45,3 +45,11 @@ def place_order(request):
     orders = Wishlist.objects.filter(customer=request.user)
     context['orders']=orders
     return render(request, 'orders/order_confirmed.html', context)
+
+class get_delivery_addresses(ListView):
+    template_name = 'orders/delivery_address.html'
+
+    def get_queryset(self):
+        queryset = DeliveryAddresses.objects.filter(customer=self.request.user)
+        return queryset
+

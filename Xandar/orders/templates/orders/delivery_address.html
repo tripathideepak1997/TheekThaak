@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<section class="banner-area organic-breadcrumb">
+        <div class="container">
+            <div class="breadcrumb-banner d-flex flex-wrap align-items-center justify-content-end">
+                <div class="col-first">
+                    <h1>Deliver Here</h1>
+                    <nav class="d-flex align-items-center">
+                        <a href="index.html">Home<span class="lnr lnr-arrow-right"></span></a>
+                        <a href="single-product.html">Delivery Addresses</a>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- End Banner Area -->
+<div>
+
+<div class="container" style="width:100%;border:1px solid black">
+{% for address in object_list %}
+    <div class="row features-inner" style="width:50%;border:1px solid black;">
+
+        <div class="col-md-12">
+<h4>Name: <span class="text-primary">{{address.receiver_name}}</span><button style="margin-left:300px">Delete</button></h4>
+<h4>Address: <span class="text-primary">{{address.street_address}}</span></h4>
+<h4>City: <span class="text-primary">{{address.city}}</span></h4>
+<h4>State: <span class="text-primary">{{address.state}}</span></h4>
+<h4>Phone Number: <span class="text-primary">{{address.phone_number}}</span></h4>
+<h4>PIN: <span class="text-primary">{{address.pincode}}</span></h4>
+        </div>
+    </div>
+    {% endfor %}
+
+</div>
+
+    </div>
+{% endblock %}
